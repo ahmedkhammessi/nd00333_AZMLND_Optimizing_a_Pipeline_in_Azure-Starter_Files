@@ -14,8 +14,6 @@ from azureml.data.dataset_factory import TabularDatasetFactory
 path = "https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/bankmarketing_train.csv"
 ds = TabularDatasetFactory.from_delimited_files(path=path)
 
-x, y = clean_data(ds)
-
 # TODO: Split data into train and test sets.
 
 ### YOUR CODE HERE ###a
