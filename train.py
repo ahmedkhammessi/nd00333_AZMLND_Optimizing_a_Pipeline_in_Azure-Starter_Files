@@ -11,10 +11,8 @@ from azureml.core.run import Run
 from azureml.data.dataset_factory import TabularDatasetFactory
 
 # TODO: Create TabularDataset using TabularDatasetFactory
-# Data is located at:
-# "https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/bankmarketing_train.csv"
-
-ds = ### YOUR CODE HERE ###
+path = "https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/bankmarketing_train.csv"
+ds = TabularDatasetFactory.from_delimited_files(path=path)
 
 x, y = clean_data(ds)
 
@@ -50,6 +48,8 @@ def clean_data(data):
 
     y_df = x_df.pop("y").apply(lambda s: 1 if s == "yes" else 0)
     
+    return x_df, y_df
+    
 
 def main():
     # Add arguments to script
@@ -62,6 +62,10 @@ def main():
 
     run.log("Regularization Strength:", np.float(args.C))
     run.log("Max iterations:", np.int(args.max_iter))
+    
+    x, y = clean_data(ds)
+    
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.5, random_state=1)
 
     model = LogisticRegression(C=args.C, max_iter=args.max_iter).fit(x_train, y_train)
 
