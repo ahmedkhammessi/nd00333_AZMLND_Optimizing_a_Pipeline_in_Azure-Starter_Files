@@ -6,9 +6,9 @@ In this project, we build and optimize an Azure ML pipeline using the Python SDK
 This model is then compared to an Azure AutoML run.
 
 ## Summary
-**In 1-2 sentences, explain the problem statement: e.g "This dataset contains data about... we seek to predict..."**
+The dataset is called bankmarketing, it is a database of customers of a banck that contains some demographic data like the 'age', 'marital_status', "education" and so on. The goal is to predict whether they will react in a positive way to a marketing campaign or not. 
 
-**In 1-2 sentences, explain the solution: e.g. "The best performing model was a ..."**
+The best performing model was a VotingEnsemble algorithm (accuracy of 0.91739) resulting from an Azure AutoML run, which has performed better than the first one, trained through Azure HyperDrive on a LogisticRegression algorithm (accuracy of 0.9132).
 
 ## Scikit-learn Pipeline
 **Explain the pipeline architecture, including data, hyperparameter tuning, and classification algorithm.**
