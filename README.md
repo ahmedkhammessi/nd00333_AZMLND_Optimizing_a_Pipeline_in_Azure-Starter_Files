@@ -6,45 +6,45 @@ In this project, we build and optimize an Azure ML pipeline using the Python SDK
 This model is then compared to an Azure AutoML run.
 
 ## Summary
-The dataset is called bankmarketing, it is a database of customers of a banck that contains some demographic data like the 'age', 'marital_status', "education" and so on. The goal is to predict whether they will react in a positive way to a marketing campaign or not. 
+- The dataset is called bankmarketing, it is a database of customers of a banck that contains some demographic data like the 'age', 'marital_status', "education" and so on. The goal is to predict whether they will react in a positive way to a marketing campaign or not. 
 
-The best performing model was a VotingEnsemble algorithm (accuracy of 0.91739) resulting from an Azure AutoML run, which has performed better than the first one, trained through Azure HyperDrive on a LogisticRegression algorithm (accuracy of 0.9132).
+- The best performing model was a VotingEnsemble algorithm (accuracy of 0.91739) resulting from an Azure AutoML run, which has performed better than the first one, trained through Azure HyperDrive on a LogisticRegression algorithm (accuracy of 0.9132).
 
 ## Scikit-learn Pipeline
 **Explain the pipeline architecture, including data, hyperparameter tuning, and classification algorithm.**
-After initializing the workspace and creating a compute target for model training, the first step in the project is to create a TabularDataset from a CSV file downloaded from a public web URL using the TabularDatasetFactory class.
+- After initializing the workspace and creating a compute target for model training, the first step in the project is to create a TabularDataset from a CSV file downloaded from a public web URL using the TabularDatasetFactory class.
 
-The data was then prepared, cleaned, and split using the pre-configured training script '(train.py)'. The data is categorically sorted and thus one-hot encoding is used to clean up the data executed within the 'clean data' function in the 'train.py' script. 
+- The data was then prepared, cleaned, and split using the pre-configured training script '(train.py)'. The data is categorically sorted and thus one-hot encoding is used to clean up the data executed within the 'clean data' function in the 'train.py' script. 
 
-The classifying algorithm used is logistic regression. It is used to estimate discrete values (yes / no, 0 or 1, true / false) based on a set of independent variables.
+- The classifying algorithm used is logistic regression. It is used to estimate discrete values (yes / no, 0 or 1, true / false) based on a set of independent variables.
 
-Next, SKLearn estimator was constructed. This estimator will provide a simple way of deploying the training job on the compute target.
+- Next, SKLearn estimator was constructed. This estimator will provide a simple way of deploying the training job on the compute target.
 
-Using the Python SDK we start the hyperparameter tuning run and chose Random Sampling Parameter strategy. The ranges for the inverse of the regularization strength and choices for maximum number of iterations to converge are provided. Then Bandit Policy was used to describe an early termination policy for the termination of jobs that are not performing well.
+- Using the Python SDK we start the hyperparameter tuning run and chose Random Sampling Parameter strategy. The ranges for the inverse of the regularization strength and choices for maximum number of iterations to converge are provided. Then Bandit Policy was used to describe an early termination policy for the termination of jobs that are not performing well.
 
-HyperDriveConfig was then configured and Accuracy was specified as the primary metric. The maximum number of concurrent jobs is set to 4 which is equal to the number of nodes in the compute cluster.
+- HyperDriveConfig was then configured and Accuracy was specified as the primary metric. The maximum number of concurrent jobs is set to 4 which is equal to the number of nodes in the compute cluster.
 
-Lastly, the hyperdrive run was submitted to the experiment and the model from the best run was saved
+- Lastly, the hyperdrive run was submitted to the experiment and the model from the best run was saved
 
 **What are the benefits of the parameter sampler you chose?**
 
-Random sampling supports discrete and continuous hyperparameters. It supports early termination of low-performance runs and thereby reducing computation costs and speedup up the exploration of the parameter space
+- Random sampling supports discrete and continuous hyperparameters. It supports early termination of low-performance runs and thereby reducing computation costs and speedup up the exploration of the parameter space
 
 **What are the benefits of the early stopping policy you chose?**
 
-Bandit policy is based on slack factor and evaluation interval. Bandit terminates runs where the primary metric is not within the specified slack factor compared to the best performing run. Slack factor is the slack allowed with respect to the best performing training run.
+- Bandit policy is based on slack factor and evaluation interval. Bandit terminates runs where the primary metric is not within the specified slack factor compared to the best performing run. Slack factor is the slack allowed with respect to the best performing training run.
 
 ## AutoML
 **In 1-2 sentences, describe the model and hyperparameters generated by AutoML.**
-The best model generated by AutoML is a VotingEnsemble method with a pre-processing step that uses MaxAbsScaler as pre-processing step.
+- The best model generated by AutoML is a VotingEnsemble method with a pre-processing step that uses MaxAbsScaler as pre-processing step.
 ## Pipeline comparison
 **Compare the two models and their performance. What are the differences in accuracy? In architecture? If there was a difference, why do you think there was one?**
-The Voting Ensemble model outperform the Logistic Regression one with an accuracy of 0.9181 against 0.9129.
+- The Voting Ensemble model outperform the Logistic Regression one with an accuracy of 0.9181 against 0.9129.
 
 The differences in architecture are huge:
 
-HyperDrive starts multiple runs each of which trains the LogisticRegression model using different tuples of hyper-parameters
-AutoML starts multiple runs each of which executes complex pipelines with choices of hyper-parameters, models and configuration details
+- HyperDrive starts multiple runs each of which trains the LogisticRegression model using different tuples of hyper-parameters
+- AutoML starts multiple runs each of which executes complex pipelines with choices of hyper-parameters, models and configuration details
 ## Future work
 **What are some areas of improvement for future experiments? Why might these improvements help the model?**
-Adapt the imbalanced classes detected in the dataset.
+- Adapt the imbalanced classes detected in the dataset.
