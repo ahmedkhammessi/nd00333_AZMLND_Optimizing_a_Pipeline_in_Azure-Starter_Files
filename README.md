@@ -6,29 +6,29 @@ In this project, we build and optimize an Azure ML pipeline using the Python SDK
 This model is then compared to an Azure AutoML run.
 
 ## Summary
-- The dataset is called bankmarketing, it is a database of customers of a banck that contains some demographic data like the 'age', 'marital_status', "education" and so on. The goal is to predict whether they will react in a positive way to a marketing campaign or not. 
+- We had initially a dataset stored already in a publicly accessible blob storage containing bank customers data. Thoughout the experince we aim at predicting whether the customers will be intersted in new product by basing the marketing campaign on the most influencing parameter in the dataset.
 
 - The best performing model was a VotingEnsemble algorithm (accuracy of 0.91739) resulting from an Azure AutoML run, which has performed better than the first one, trained through Azure HyperDrive on a LogisticRegression algorithm (accuracy of 0.9132).
 
 ## Scikit-learn Pipeline
 **Explain the pipeline architecture, including data, hyperparameter tuning, and classification algorithm.**
-- After initializing the workspace and creating a compute target for model training, the first step in the project is to create a TabularDataset from a CSV file downloaded from a public web URL using the TabularDatasetFactory class.
+- The first steps are generic, So mainly intialize the workspace and create a compute cluster for model training. Then prepare the data by creating a TabularDataset form the provided CSV file.
 
-- The data was then prepared, cleaned, and split using the pre-configured training script '(train.py)'. The data is categorically sorted and thus one-hot encoding is used to clean up the data executed within the 'clean data' function in the 'train.py' script. 
+- The data was then cleaned, and split using the training script 'train.py'.
 
-- The classifying algorithm used is logistic regression. It is used to estimate discrete values (yes / no, 0 or 1, true / false) based on a set of independent variables.
+- The classifying algorithm used is logistic regression. It is used to estimate discrete values based on a set of independent variables.
 
 - Next, SKLearn estimator was constructed. This estimator will provide a simple way of deploying the training job on the compute target.
 
-- Using the Python SDK we start the hyperparameter tuning run and chose Random Sampling Parameter strategy. The ranges for the inverse of the regularization strength and choices for maximum number of iterations to converge are provided. Then Bandit Policy was used to describe an early termination policy for the termination of jobs that are not performing well.
+- The last step is to provide the Sampling Parameter to run the hyperparameter tuning. The ranges for the inverse of the regularization strength and choices for maximum number of iterations to converge are provided.
 
-- HyperDriveConfig was then configured and Accuracy was specified as the primary metric. The maximum number of concurrent jobs is set to 4 which is equal to the number of nodes in the compute cluster.
+- We configure the HyperDrive to set the 'Accuracy' as the primary metric.
 
-- Lastly, the hyperdrive run was submitted to the experiment and the model from the best run was saved
+- Finally sibmit the experiment and find the best model.
 
 **What are the benefits of the parameter sampler you chose?**
 
-- Random sampling supports discrete and continuous hyperparameters. It supports early termination of low-performance runs and thereby reducing computation costs and speedup up the exploration of the parameter space
+- Random sampling supports discrete and continuous hyperparameters. It supports early termination of low-performance runs and thereby reducing computation costs and speedup up the exploration of the parameter space.
 
 **What are the benefits of the early stopping policy you chose?**
 
