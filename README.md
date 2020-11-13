@@ -48,3 +48,5 @@ The differences in architecture are huge:
 ## Future work
 **What are some areas of improvement for future experiments? Why might these improvements help the model?**
 - Adapt the imbalanced classes detected in the dataset.
+- Increase the max_total_runs parameter of HyperDriveConfig
+- Increase the experiment_timeout_minutes parameter of the AutoMLConfig
